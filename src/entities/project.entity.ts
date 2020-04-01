@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, OneToMany, ManyToOne } from 'typeorm';
 import { Company } from './company.entity';
-import { User } from './user.entity';
+import { Developer } from './developer.entity';
 
 @Entity()
 export class Project {
@@ -10,16 +10,14 @@ export class Project {
   @Column()
   name: string;
 
-  @Column()
   @ManyToOne(type => Company, company => company.id)
   company: Company;
 
   @Column()
-  stack: string[];
+  stack: string;
 
-  @Column()
-  @OneToMany(type => User, user => user.id)
-  developers: User[];
+  @OneToMany(type => Developer, user => user.id)
+  developers: Developer[];
 
   @Column()
   maxDevelopers: number;

@@ -3,7 +3,7 @@ import { Company } from './company.entity';
 import { Project } from './project.entity';
 
 @Entity()
-export class User {
+export class Developer {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
@@ -17,10 +17,8 @@ export class User {
   age: number;
 
   @ManyToOne(type => Company, company => company.id)
-  @Column()
   company: Company;
 
-  @Column()
   @OneToMany(type => Project, project => project.id)
   project: Project;
 }

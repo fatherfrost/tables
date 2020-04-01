@@ -1,5 +1,5 @@
 import { IsNotEmptyObject, IsOptional, IsString, MinLength, ValidateNested } from 'class-validator';
-import { User } from '../entities/user.entity';
+import { Developer } from '../entities/developer.entity';
 import { Type } from 'class-transformer';
 
 export class CreateCompanyDto {
@@ -13,11 +13,11 @@ export class CreateCompanyDto {
   location: string;
 
   @IsNotEmptyObject()
-  @Type(() => User)
-  owner: User;
+  @Type(() => Developer)
+  owner: Developer;
 
   @IsOptional()
   @ValidateNested({each: true})
-  @Type(() => User)
-  developers: User[];
+  @Type(() => Developer)
+  developers: Developer[];
 }

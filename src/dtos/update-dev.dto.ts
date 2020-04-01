@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, MinLe
 import { Company } from '../entities/company.entity';
 import { Project } from '../entities/project.entity';
 
-export class UpdateUserDto {
+export class UpdateDevDto {
   @IsString()
   @IsOptional()
   @MinLength(3)

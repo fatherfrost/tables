@@ -3,7 +3,7 @@ import { Company } from '../entities/company.entity';
 import { Project } from '../entities/project.entity';
 import { Type } from 'class-transformer';
 
-export class CreateUserDto {
+export class CreateDevDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, OneToMany } from 'typeorm';
-import { User } from './user.entity';
+import { Developer } from './developer.entity';
 
 @Entity()
 export class Company {
@@ -12,11 +12,9 @@ export class Company {
   @Column()
   location: string;
 
-  @Column()
-  @OneToOne(() => User, user => user.id)
-  owner: User;
+  @OneToOne(type => Developer, user => user.id)
+  owner: Developer;
 
-  @Column()
-  @OneToMany(() => User, user => user.id)
-  developers: User[];
+  @OneToMany(type => Developer, user => user.id)
+  developers: Developer[];
 }
