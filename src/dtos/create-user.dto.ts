@@ -1,4 +1,7 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString, Min, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import { Company } from '../entities/company.entity';
+import { Project } from '../entities/project.entity';
+import { Type } from 'class-transformer';
 
 export class CreateUserDto {
   @IsString()
@@ -14,4 +17,14 @@ export class CreateUserDto {
   @IsNotEmpty()
   @Min(18)
   age: number;
+
+  @IsString()
+  @IsOptional()
+  @Type(() => Company)
+  company: Company;
+
+  @IsString()
+  @IsOptional()
+  @Type(() => Project)
+  project: Project;
 }

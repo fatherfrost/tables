@@ -1,17 +1,26 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString, Min, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, MinLength } from 'class-validator';
+import { Company } from '../entities/company.entity';
+import { Project } from '../entities/project.entity';
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(3)
   name: string;
 
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   email: string;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   @Min(18)
   age: number;
+
+  @IsOptional()
+  company: Company;
+
+  @IsOptional()
+  project: Project;
 }
+

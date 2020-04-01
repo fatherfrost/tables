@@ -1,18 +1,18 @@
 import {
   IsArray,
   IsNotEmpty,
-  IsNotEmptyObject,
   IsNumber,
   IsOptional,
   IsString,
   Min,
-  MinLength, ValidateNested,
+  MinLength,
+  ValidateNested,
 } from 'class-validator';
-import { Company } from '../entities/company.entity';
-import { User } from '../entities/user.entity';
 import { Type } from 'class-transformer';
+import { User } from '../entities/user.entity';
+import { Company } from '../entities/company.entity';
 
-export class CreateProjectDto {
+export class UpdateProjectDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
@@ -27,7 +27,7 @@ export class CreateProjectDto {
   @Min(1)
   maxDevelopers: number;
 
-  @IsNotEmptyObject()
+  @IsOptional()
   @Type(() => Company)
   company: Company;
 

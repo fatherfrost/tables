@@ -1,8 +1,8 @@
-import { IsNotEmptyObject, IsOptional, IsString, MinLength, ValidateNested } from 'class-validator';
+import { IsOptional, IsString, MinLength, ValidateNested } from 'class-validator';
 import { User } from '../entities/user.entity';
 import { Type } from 'class-transformer';
 
-export class CreateCompanyDto {
+export class UpdateCompanyDto {
   @IsString()
   @IsOptional()
   @MinLength(3)
@@ -12,8 +12,7 @@ export class CreateCompanyDto {
   @IsOptional()
   location: string;
 
-  @IsNotEmptyObject()
-  @Type(() => User)
+  @IsOptional()
   owner: User;
 
   @IsOptional()
