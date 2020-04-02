@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { createQueryBuilder, getConnection, Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { Company } from './entity/company.entity';
 import { DevelopersService } from '../developers/developers.service';
-import { Developer } from '../developers/entity/developer.entity';
 
 @Injectable()
 export class CompaniesService {
@@ -14,7 +13,6 @@ export class CompaniesService {
   ) {}
 
   async create(company: Company): Promise<boolean> {
-    console.log(company, '----------');
     const created = await getConnection()
       .createQueryBuilder()
       .insert()
@@ -25,19 +23,16 @@ export class CompaniesService {
     return !!created;
   }
 
-  async getCompaniesWithDevelopers(): Promise<Company[]> {
-    const joinDev = this.companiesRepository.createQueryBuilder('company')
+  getCompaniesWithDevelopers(): Promise<Company[]> {
+    return this.companiesRepository.createQueryBuilder('company')
       .leftJoinAndSelect('company.developers', 'developer')
       .getMany();
-    return joinDev;
   }
 
-  async getCompanyWithDevelopers(id: string): Promise<Company[]> {
-    console.log(id);
-    const joinDev = await this.companiesRepository.createQueryBuilder('company')
+  getCompanyWithDevelopers(id: string): Promise<Company[]> {
+    return this.companiesRepository.createQueryBuilder('company')
       .innerJoinAndSelect('company.developers', 'developer', 'developer.company = :id', {id: id})
       .getMany();
-    return joinDev;
   }
 
   async update(company: Company, id: string): Promise<Company> {
@@ -51,8 +46,7 @@ export class CompaniesService {
     const developer = await this.devService.findOne(userId);
     if (!company.developers) {
       company.developers = [];
-    };
-    console.log(company);
+    }
     company.developers.push(developer);
     return await this.companiesRepository.save(company);
   }

@@ -17,7 +17,6 @@ import { CompaniesService } from './companies.service';
 import { Company } from './entity/company.entity';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { IsNotEmptyObject } from 'class-validator';
 
 @Controller('companies')
 export class CompaniesController {
@@ -48,10 +47,8 @@ export class CompaniesController {
     @Body(new ValidationPipe({ whitelist: true }))
     createCompanyDto: CreateCompanyDto,
   ): Promise<void> {
-    console.log('1111111111');
     const company = plainToClass(Company, createCompanyDto);
     const result = await this.companiesService.create(company);
-    console.log(result, ' -------------');
     if (result) {
       res.sendStatus(200);
     } else {

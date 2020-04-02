@@ -6,7 +6,7 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Put, Query,
   Req,
   Res,
   ValidationPipe,
@@ -21,6 +21,14 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
+
+  @Get('/details')
+  getProjectsWithDevelopers(@Query('id') id: string): Promise<Project[]> {
+    if (id !== undefined) {
+      return this.projectsService.getProjectWithDevelopers(id);
+    }
+    return this.projectsService.getProjectsWithDevelopers();
+  }
 
   @Get()
   getAllProjects(): Promise<Project[]> {
@@ -46,6 +54,15 @@ export class ProjectsController {
     } else {
       throw new BadRequestException();
     }
+  }
+
+  @Put('/:id/:userId')
+  async addUser(
+    @Req() request: Request,
+    @Param('id') id: string,
+    @Param('userId') userId: string,
+  ): Promise<Project> {
+    return this.projectsService.addUser(id, userId);
   }
 
   @Put('/:id')
