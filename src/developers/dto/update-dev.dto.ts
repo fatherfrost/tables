@@ -1,6 +1,15 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, MinLength } from 'class-validator';
-import { Company } from '../entities/company.entity';
-import { Project } from '../entities/project.entity';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Min,
+  MinLength,
+} from 'class-validator';
+import { Company } from '../../companies/entity/company.entity';
+import { Project } from '../../projects/entity/project.entity';
 
 export class UpdateDevDto {
   @IsString()
@@ -23,4 +32,3 @@ export class UpdateDevDto {
   @IsOptional()
   project: Project;
 }
-

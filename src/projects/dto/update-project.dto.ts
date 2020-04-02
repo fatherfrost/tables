@@ -9,8 +9,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Developer } from '../entities/developer.entity';
-import { Company } from '../entities/company.entity';
+import { Developer } from '../../developers/entity/developer.entity';
+import { Company } from '../../companies/entity/company.entity';
 
 export class UpdateProjectDto {
   @IsString()
@@ -32,7 +32,7 @@ export class UpdateProjectDto {
   company: Company;
 
   @IsOptional()
-  @ValidateNested({each: true})
+  @ValidateNested({ each: true })
   @Type(() => Developer)
   developers: Developer[];
 }

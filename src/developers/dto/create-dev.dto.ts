@@ -1,6 +1,14 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Min, MinLength } from 'class-validator';
-import { Company } from '../entities/company.entity';
-import { Project } from '../entities/project.entity';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+  MinLength,
+} from 'class-validator';
+import { Company } from '../../companies/entity/company.entity';
+import { Project } from '../../projects/entity/project.entity';
 import { Type } from 'class-transformer';
 
 export class CreateDevDto {

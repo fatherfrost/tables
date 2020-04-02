@@ -1,37 +1,45 @@
 import {
   BadRequestException,
   Body,
-  Controller, Delete,
-  Get, Param, Post, Put, Req, Res, ValidationPipe,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Req,
+  Res,
+  ValidationPipe,
 } from '@nestjs/common';
 import { DevelopersService } from './developers.service';
-import { Developer } from '../entities/developer.entity';
-import { CreateDevDto } from '../dtos/create-dev.dto';
+import { Developer } from './entity/developer.entity';
+import { CreateDevDto } from './dto/create-dev.dto';
 import { plainToClass } from 'class-transformer';
-import { UpdateDevDto } from '../dtos/update-dev.dto';
+import { UpdateDevDto } from './dto/update-dev.dto';
 import { Request, Response } from 'express';
 
 @Controller('developers')
 export class DevelopersController {
-  constructor(private readonly devsService: DevelopersService) {}
+  constructor(private readonly developersService: DevelopersService) {}
 
   @Get()
   getAllUsers(): Promise<Developer[]> {
-    console.log('get all');
-    return this.devsService.findAll();
+    return this.developersService.findAll();
   }
 
   @Get('/:id')
   getById(@Param('id') id: string): Promise<Developer> {
-    return this.devsService.findOne(id);
+    return this.developersService.findOne(id);
   }
 
   @Post()
-  async createUser(@Req() request: Request,
-                   @Res() res: Response,
-             @Body(new ValidationPipe({ whitelist: true })) createUserDto: CreateDevDto): Promise<void> {
+  async createUser(
+    @Req() request: Request,
+    @Res() res: Response,
+    @Body(new ValidationPipe({ whitelist: true })) createUserDto: CreateDevDto,
+  ): Promise<void> {
     const user = plainToClass(Developer, createUserDto);
-    const result = await this.devsService.create(user);
+    const result = await this.developersService.create(user);
     if (result) {
       res.sendStatus(200);
     } else {
@@ -40,17 +48,23 @@ export class DevelopersController {
   }
 
   @Put('/:id')
-  async updateUser(@Req() request: Request,
-                   @Param('id') id: string,
-                   @Body(new ValidationPipe({ whitelist: true })) updateUserDto: UpdateDevDto): Promise<Developer> {
+  async updateUser(
+    @Req() request: Request,
+    @Param('id') id: string,
+    @Body(new ValidationPipe({ whitelist: true })) updateUserDto: UpdateDevDto,
+  ): Promise<Developer> {
     const user = plainToClass(Developer, updateUserDto);
-    return this.devsService.update(user, id)
+    return this.developersService.update(user, id);
   }
 
-  @Delete()
-  async deleteUser(@Req() request: Request, @Res() res: Response, @Param('id') id: string): Promise<void> {
+  @Delete('/:id')
+  async deleteUser(
+    @Req() request: Request,
+    @Res() res: Response,
+    @Param('id') id: string,
+  ): Promise<void> {
     try {
-      await this.devsService.delete(id);
+      await this.developersService.delete(id);
       res.sendStatus(200);
     } catch (e) {
       throw new BadRequestException(e.message);

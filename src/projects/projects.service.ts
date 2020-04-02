@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Project } from '../entities/project.entity';
+import { getConnection, Repository } from 'typeorm';
+import { Project } from './entity/project.entity';
 
 @Injectable()
 export class ProjectsService {
@@ -10,12 +10,30 @@ export class ProjectsService {
     private projectsRepository: Repository<Project>,
   ) {}
 
-  async create(project: Project): Promise<Project> {
-    return this.projectsRepository.create(project);
+  async create(project: Project): Promise<boolean> {
+    const created = await getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(Project)
+      .values(project)
+      .execute();
+
+    return !!created;
   }
 
-  findAll(): Promise<Project[]> {
-    return this.projectsRepository.find();
+  async update(project: Project, id: string): Promise<Project> {
+    const projectFromDB = await this.projectsRepository.findOne(id);
+    this.projectsRepository.merge(projectFromDB, project);
+    return await this.projectsRepository.save(projectFromDB);
+  }
+
+  async delete(id: string): Promise<boolean> {
+    const result = await this.projectsRepository.delete(id);
+    return !!result;
+  }
+
+  async findAll(): Promise<Project[]> {
+    return await this.projectsRepository.find();
   }
 
   findOne(id: string): Promise<Project> {

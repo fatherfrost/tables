@@ -6,10 +6,11 @@ import {
   IsOptional,
   IsString,
   Min,
-  MinLength, ValidateNested,
+  MinLength,
+  ValidateNested,
 } from 'class-validator';
-import { Company } from '../entities/company.entity';
-import { Developer } from '../entities/developer.entity';
+import { Company } from '../../companies/entity/company.entity';
+import { Developer } from '../../developers/entity/developer.entity';
 import { Type } from 'class-transformer';
 
 export class CreateProjectDto {
@@ -32,7 +33,7 @@ export class CreateProjectDto {
   company: Company;
 
   @IsOptional()
-  @ValidateNested({each: true})
+  @ValidateNested({ each: true })
   @Type(() => Developer)
   developers: Developer[];
 }
