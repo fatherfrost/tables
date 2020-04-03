@@ -26,10 +26,15 @@ export class CompaniesService {
   getCompaniesWithDevelopers(): Promise<Company[]> {
     return this.companiesRepository.createQueryBuilder('company')
       .leftJoinAndSelect('company.developers', 'developer')
+      .printSql()
       .getMany();
   }
 
   getCompanyWithDevelopers(id: string): Promise<Company[]> {
+    const sql =  this.companiesRepository.createQueryBuilder('company')
+      .innerJoinAndSelect('company.developers', 'developer', 'developer.company = :id', {id: id})
+      .getSql();
+    console.log(sql);
     return this.companiesRepository.createQueryBuilder('company')
       .innerJoinAndSelect('company.developers', 'developer', 'developer.company = :id', {id: id})
       .getMany();

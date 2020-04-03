@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Developer } from './entity/developer.entity';
-import { getConnection, Repository } from 'typeorm';
+import { getConnection, getManager, Repository } from 'typeorm';
 
 @Injectable()
 export class DevelopersService {
@@ -9,6 +9,7 @@ export class DevelopersService {
     @InjectRepository(Developer)
     private developersRepository: Repository<Developer>,
   ) {}
+  entityManager = getManager();
 
   async create(user: Developer): Promise<boolean> {
     const created = await getConnection()
@@ -22,7 +23,6 @@ export class DevelopersService {
   }
 
   async update(user: Developer, id: string): Promise<Developer> {
-    console.log(user, ' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     const userFromDB = await this.developersRepository.findOne(id);
     this.developersRepository.merge(userFromDB, user);
     console.log(userFromDB);
@@ -30,15 +30,20 @@ export class DevelopersService {
   }
 
   async delete(id: string): Promise<boolean> {
-    const result = await this.developersRepository.delete(id);
+    const query = `DELETE FROM developer WHERE "id" = '${id}'`;
+    const result = await this.entityManager.query(query);
+    // const result = await this.developersRepository.delete(id);
     return !!result;
   }
 
   async findAll(): Promise<Developer[]> {
-    return await this.developersRepository.find();
+    return await this.entityManager.query('DELETE * FROM developer');
+    //return await this.developersRepository.find();
   }
 
   async findOne(id: string): Promise<Developer> {
-    return await this.developersRepository.findOne(id);
+    const query = `SELECT * FROM developer WHERE "id" = '${id}'`;
+    return await this.entityManager.query(query);
+    //return await this.developersRepository.findOne(id);
   }
 }
