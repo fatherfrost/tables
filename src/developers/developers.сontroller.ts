@@ -33,7 +33,7 @@ export class DevelopersController {
     return this.developersService.parse();
   }
 
-  @EventDecorator('console-log')
+  @EventDecorator('ping-developers')
   @Get('/fix')
   check() {
     console.log('in developers controller');

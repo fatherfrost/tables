@@ -34,7 +34,7 @@ export class ProjectsController {
   }
 
   @Get()
-  @EventDecorator('console-log')
+  @EventDecorator('ping-projects')
   getAllProjects(): any {
     console.log('GET ALL PROJECTS', ' --------- ');
     // return this.projectsService.findAll();
@@ -46,7 +46,7 @@ export class ProjectsController {
     return this.projectsService.findOne(id);
   }
 
-  @EventDecorator('console-log')
+  @EventDecorator('ping-projects')
   consoleLogSomeHernya(): void {
     console.log('HERNYAAAAAAAAAAAAAAAA');
   }

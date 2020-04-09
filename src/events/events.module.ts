@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
-import { SharedService } from './shared.service';
-import { MessageListener } from './listener';
+import { EmitEventController } from './emit-event.controller';
 
 @Module({
-  controllers: [MessageListener],
-  providers: [SharedService],
-  exports: [SharedService],
+  controllers: [EmitEventController],
 })
 export class EventsModule {}

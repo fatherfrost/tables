@@ -1,5 +1,3 @@
-import { SharedService } from './shared.service';
-
 export interface Event {
   name: string;
   callback: any;
@@ -11,10 +9,10 @@ export interface EmittedEvent {
 }
 
 export abstract class EventHandler {
+  public static events: Event[] = [];
+
   public static emit(event: EmittedEvent): void {
-    console.log(event, ' ---------');
-    console.log(SharedService.events);
-    for (const ev of SharedService.events) {
+    for (const ev of this.events) {
       if (ev.name === event.name) {
         ev.callback(event.data);
       }
@@ -23,9 +21,15 @@ export abstract class EventHandler {
 
   public static subscribeToEvents(events: Event[]) {
     events.forEach((event) => {
-      SharedService.subscribeToEvent(event, (callback) => {
-        // this.eventsSubscriptions.push(callback);
+      this.subscribeToEvent(event, (callback) => {
+        // this.events.push(callback);
       });
     })
+  }
+
+  public static subscribeToEvent(event: Event, callback) {
+    this.events.push(event);
+    const eventFound = this.events.find((item) => item.name === event.name);
+    callback(eventFound);
   }
 }
