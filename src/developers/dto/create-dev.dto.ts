@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsNumber,
@@ -25,6 +26,10 @@ export class CreateDevDto {
   @IsNotEmpty()
   @Min(18)
   age: number;
+
+  @IsBoolean()
+  @IsOptional()
+  IsStrange: boolean;
 
   @IsString()
   @IsOptional()

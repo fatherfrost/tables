@@ -51,7 +51,7 @@ describe('Developers (e2e)', () => {
 
   beforeAll(async () => {
     const mockRepository = {
-      findOne: jest.fn().mockImplementation((id: string) => {;
+      findOne: jest.fn().mockImplementation((id: string) => {
         if (id === '1') {
           return Promise.resolve(developer);
         }

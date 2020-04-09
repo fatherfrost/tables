@@ -12,7 +12,7 @@ import { Project } from '../../projects/entity/project.entity';
 @Entity()
 export class Developer {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: number | string;
 
   @Column()
   name: string;

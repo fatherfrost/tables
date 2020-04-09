@@ -8,6 +8,7 @@ import { Company } from './companies/entity/company.entity';
 import { Project } from './projects/entity/project.entity';
 import { ProjectsModule } from './projects/projects.module';
 import { CompaniesModule } from './companies/companies.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CompaniesModule } from './companies/companies.module';
     DevelopersModule,
     ProjectsModule,
     CompaniesModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

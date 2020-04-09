@@ -17,10 +17,13 @@ import { ProjectsService } from './projects.service';
 import { Project } from './entity/project.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { EventDecorator } from '../decorator';
+
 
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(private readonly projectsService: ProjectsService
+  ) {}
 
   @Get('/details')
   getProjectsWithDevelopers(@Query('id') id: string): Promise<Project[]> {
@@ -31,13 +34,21 @@ export class ProjectsController {
   }
 
   @Get()
-  getAllProjects(): Promise<Project[]> {
-    return this.projectsService.findAll();
+  @EventDecorator('console-log')
+  getAllProjects(): any {
+    console.log('GET ALL PROJECTS', ' --------- ');
+    // return this.projectsService.findAll();
+    return 1;
   }
 
   @Get('/:id')
   getById(@Param('id') id: string): Promise<Project> {
     return this.projectsService.findOne(id);
+  }
+
+  @EventDecorator('console-log')
+  consoleLogSomeHernya(): void {
+    console.log('HERNYAAAAAAAAAAAAAAAA');
   }
 
   @Post()

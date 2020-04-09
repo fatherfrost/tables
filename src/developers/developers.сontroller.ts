@@ -17,6 +17,7 @@ import { CreateDevDto } from './dto/create-dev.dto';
 import { plainToClass } from 'class-transformer';
 import { UpdateDevDto } from './dto/update-dev.dto';
 import { Request, Response } from 'express';
+import { EventDecorator } from '../decorator';
 
 @Controller('developers')
 export class DevelopersController {
@@ -25,6 +26,17 @@ export class DevelopersController {
   @Get()
   getAllUsers(): Promise<Developer[]> {
     return this.developersService.findAll();
+  }
+
+  @Get('/parse')
+  parse() {
+    return this.developersService.parse();
+  }
+
+  @EventDecorator('console-log')
+  @Get('/fix')
+  check() {
+    console.log('in developers controller');
   }
 
   @Get('/:id')

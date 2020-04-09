@@ -69,5 +69,9 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+    "compilerOptions": {
+    "target": "ES5",
+    "experimentalDecorators": true
   }
 }

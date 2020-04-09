@@ -30,6 +30,31 @@ describe('Developers service', () => {
       },
     },
   };
+  const developerExpected: Developer = {
+    id: '1',
+    name: 'Alex',
+    age: 24,
+    email: 'olsnis@pascalium.com',
+    company: {
+      id: 2,
+      name: 'Pascalium',
+      location: 'Ukraine',
+      developers: [],
+    },
+    project: {
+      id: 2,
+      name: 'JAN',
+      developers: [],
+      maxDevelopers: 10,
+      stack: 'FIREBASE',
+      company: {
+        id: 2,
+        name: 'Pascalium',
+        location: 'Ukraine',
+        developers: [],
+      },
+    },
+  };
 
   beforeEach(async () => {
     const developersRepository = new Repository<Developer>();
@@ -49,8 +74,11 @@ describe('Developers service', () => {
   });
 
   it('should return developer', async () => {
-    expect(await developersService.findOne(1)).toEqual(developer);
+    const result = await developersService.findOne(1);
+    expect(result).toEqual(developerExpected);
   })
+
+
 
 
 });
