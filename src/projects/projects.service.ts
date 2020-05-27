@@ -42,7 +42,7 @@ export class ProjectsService {
     return await this.projectsRepository.save(projectFromDB);
   }
 
-  async addUser(projectId: string, userId: string): Promise<Project> {
+  /*async addUser(projectId: string, userId: string): Promise<Project> {
     const project = await this.projectsRepository.findOne(projectId);
     const developer = await this.devService.findOne(userId);
     if (!project.developers) {
@@ -51,7 +51,7 @@ export class ProjectsService {
     console.log(project);
     project.developers.push(developer);
     return await this.projectsRepository.save(project);
-  }
+  }*/
 
   async delete(id: string): Promise<boolean> {
     const result = await this.projectsRepository.delete(id);

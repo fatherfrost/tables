@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,7 +8,7 @@ import { Company } from './companies/entity/company.entity';
 import { Project } from './projects/entity/project.entity';
 import { ProjectsModule } from './projects/projects.module';
 import { CompaniesModule } from './companies/companies.module';
-import { EventsModule } from './events/events.module';
+import {SSEMiddleware} from "nestjs-sse";
 
 @Module({
   imports: [
@@ -25,9 +25,14 @@ import { EventsModule } from './events/events.module';
     DevelopersModule,
     ProjectsModule,
     CompaniesModule,
-    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(SSEMiddleware)
+      .forRoutes(AppController);
+  }
+}

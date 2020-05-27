@@ -17,7 +17,6 @@ import { ProjectsService } from './projects.service';
 import { Project } from './entity/project.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { EventDecorator } from '../decorator';
 
 
 @Controller('projects')
@@ -34,21 +33,13 @@ export class ProjectsController {
   }
 
   @Get()
-  @EventDecorator('ping-projects')
   getAllProjects(): any {
-    console.log('GET ALL PROJECTS', ' --------- ');
-    // return this.projectsService.findAll();
-    return 1;
+    return this.projectsService.findAll();
   }
 
   @Get('/:id')
   getById(@Param('id') id: string): Promise<Project> {
     return this.projectsService.findOne(id);
-  }
-
-  @EventDecorator('ping-projects')
-  consoleLogSomeHernya(): void {
-    console.log('HERNYAAAAAAAAAAAAAAAA');
   }
 
   @Post()
@@ -67,14 +58,14 @@ export class ProjectsController {
     }
   }
 
-  @Put('/:id/:userId')
+  /*@Put('/:id/:userId')
   async addUser(
     @Req() request: Request,
     @Param('id') id: string,
     @Param('userId') userId: string,
   ): Promise<Project> {
     return this.projectsService.addUser(id, userId);
-  }
+  }*/
 
   @Put('/:id')
   async updateProject(

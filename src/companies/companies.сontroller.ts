@@ -12,17 +12,22 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { CompaniesService } from './companies.service';
 import { Company } from './entity/company.entity';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { Response } from 'nestjs-sse';
+import { EventEmitter } from 'events';
+
 
 @Controller('companies')
 export class CompaniesController {
+  myEmitter = new EventEmitter();
+  connection;
   constructor(private readonly companiesService: CompaniesService) {}
 
-  @Get('/details')
+  /*@Get('/details')
   getCompaniesWithDevelopers(@Query('id') id: string): Promise<Company[]> {
     if (id !== undefined) {
       return this.companiesService.getCompanyWithDevelopers(id);
@@ -54,16 +59,16 @@ export class CompaniesController {
     } else {
       throw new BadRequestException();
     }
-  }
+  }*/
 
-  @Put('/:id/:userId')
+/*  @Put('/:id/:userId')
   async addUser(
     @Req() request: Request,
     @Param('id') id: string,
     @Param('userId') userId: string,
   ): Promise<Company> {
     return this.companiesService.addUser(id, userId);
-  }
+  }*/
 
   @Put('/:id')
   async updateCompany(
@@ -88,5 +93,29 @@ export class CompaniesController {
     } catch (e) {
       throw new BadRequestException(e.message);
     }
+  }
+
+  @Get('test/:name')
+  test(@Param('name') name: string) {
+    console.log('In controller, ', name);
+    this.myEmitter.emit('test', {success: true});
+    return this.companiesService.test();
+    // return this.developersService.test(name);
+  }
+
+  @Get('tetest')
+  tetest(@Res() res) {
+    // this.connection(`data: ${JSON.stringify({text: '1'})}\n\n`);
+    // return this.companiesService.test();
+  }
+
+  @Get('/connect')
+  connect(@Res() res: Response) {
+    console.log('Connecting developers');
+    res.sse(`data: ${JSON.stringify({text: 'init'})}\n\n`);
+    this.myEmitter.on('test', (data) => {
+      console.log(data);
+      res.sse(`data: ${JSON.stringify(data)}\n\n`);
+    });
   }
 }

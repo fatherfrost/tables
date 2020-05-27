@@ -16,11 +16,15 @@ import { Developer } from './entity/developer.entity';
 import { CreateDevDto } from './dto/create-dev.dto';
 import { plainToClass } from 'class-transformer';
 import { UpdateDevDto } from './dto/update-dev.dto';
-import { Request, Response } from 'express';
-import { EventDecorator } from '../decorator';
+import { Request } from 'express';
+import { Response } from 'nestjs-sse';
+import { Connection } from '../sse/connection';
+// import { SseService } from '../sse/sse.service';
+// import { MyEmitter } from '../eventEmitter';
 
 @Controller('developers')
 export class DevelopersController {
+  // myEmitter = new MyEmitter();
   constructor(private readonly developersService: DevelopersService) {}
 
   @Get()
@@ -28,23 +32,14 @@ export class DevelopersController {
     return this.developersService.findAll();
   }
 
-  @Get('/parse')
-  parse() {
-    return this.developersService.parse();
+  @Get('test/:name')
+  test(@Param('name') name: string) {
+    console.log('In controller, ', name);
+    // this.myEmitter.emit('test', {name: name});
+    // return this.developersService.test(name);
   }
 
-  @EventDecorator('ping-developers')
-  @Get('/fix')
-  check() {
-    console.log('in developers controller');
-  }
-
-  @Get('/:id')
-  getById(@Param('id') id: string): Promise<Developer> {
-    return this.developersService.findOne(id);
-  }
-
-  @Post()
+ /* @Post()
   async createUser(
     @Req() request: Request,
     @Res() res: Response,
@@ -81,5 +76,16 @@ export class DevelopersController {
     } catch (e) {
       throw new BadRequestException(e.message);
     }
-  }
+  }*/
+
+ /* @Get('/connect')
+  connect(@Res() res: Response) {
+    console.log('Connecting developers');
+    res.sse(`data: ${JSON.stringify({name: 'Alex', age: 24})}\n\n`);
+    /!*console.log('-----------------');
+    this.myEmitter.on('test', (data) => {
+      console.log(data);
+      res.sse(`data: ${JSON.stringify(data)}\n\n`);
+    });*!/
+  }*/
 }

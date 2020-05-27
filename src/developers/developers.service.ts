@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Developer } from './entity/developer.entity';
 import { getConnection, Repository } from 'typeorm';
-import * as fs from "fs";
+import { SseService } from '../sse/sse.service';
+// import { MyEmitter } from '../eventEmitter';
 
 @Injectable()
 export class DevelopersService {
   constructor(
-    @InjectRepository(Developer)
+    @InjectRepository(Developer)  
     private developersRepository: Repository<Developer>,
+    // private sseService: SseService,
   ) {}
 
   async create(user: Developer): Promise<boolean> {
@@ -20,6 +22,12 @@ export class DevelopersService {
       .execute();
 
     return !!created;
+  }
+
+  test(name: string): string {
+    console.log('In service, ', name);
+    // this.sseService.send({name: 'HUI PIDOR EBANIY'});
+    return name;
   }
 
   async update(user: Developer, id: string): Promise<Developer> {
@@ -39,32 +47,5 @@ export class DevelopersService {
   async findAll(): Promise<Developer[]> {
     // return await this.entityManager.query('DELETE * FROM developer');
     return await this.developersRepository.find();
-  }
-
-  async findOne(id: string): Promise<Developer> {
-    // const query = `SELECT * FROM developer WHERE "id" = '${id}'`;
-    // return await this.entityManager.query(query);
-    const user =  await this.developersRepository.findOne(id);
-    return user;
-  }
-
-  async parse() {
-    console.log(' in service');
-    const data =  await this.readFile();
-    console.log(data);
-    // const doc = new DOMParser().parseFromString(data, 'text/rdf');
-    return data;
-  }
-
-  readFile() {
-    return new Promise((resolve, reject) => {
-      fs.readFile('book.rdf', 'utf8', (error, data) => {
-        if (error) {
-          console.log(error);
-          reject();
-        }
-        if (data) resolve(data);
-      })
-    })
   }
 }

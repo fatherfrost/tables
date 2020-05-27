@@ -3,13 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { getConnection, Repository } from 'typeorm';
 import { Company } from './entity/company.entity';
 import { DevelopersService } from '../developers/developers.service';
+import { EventService } from '../eventEmitter';
 
 @Injectable()
 export class CompaniesService {
   constructor(
     @InjectRepository(Company)
     private companiesRepository: Repository<Company>,
-    private devService: DevelopersService,
+    // private emitter: MyEmitter,
+    private emitter: EventService,
+    // private devService: DevelopersService,
   ) {}
 
   async create(company: Company): Promise<boolean> {
@@ -21,6 +24,12 @@ export class CompaniesService {
       .execute();
 
     return !!created;
+  }
+
+  test() {
+    console.log('kek kek ');
+    // this.emitter.emit('test', {text: 1});
+    return 1;
   }
 
   getCompaniesWithDevelopers(): Promise<Company[]> {
@@ -46,7 +55,7 @@ export class CompaniesService {
     return await this.companiesRepository.save(companyFromDB);
   }
 
-  async addUser(companyId: string, userId: string): Promise<Company> {
+/*  async addUser(companyId: string, userId: string): Promise<Company> {
     const company = await this.companiesRepository.findOne(companyId);
     const developer = await this.devService.findOne(userId);
     if (!company.developers) {
@@ -54,7 +63,7 @@ export class CompaniesService {
     }
     company.developers.push(developer);
     return await this.companiesRepository.save(company);
-  }
+  }*/
 
 
   async delete(id: string): Promise<boolean> {

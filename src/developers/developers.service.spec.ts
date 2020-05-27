@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 describe('Developers service', () => {
   let developersService;
   const developer: Developer = {
-    id: 1,
+    id: '1',
     name: 'Alex',
     age: 24,
     email: 'olsnis@pascalium.com',
@@ -77,8 +77,4 @@ describe('Developers service', () => {
     const result = await developersService.findOne(1);
     expect(result).toEqual(developerExpected);
   })
-
-
-
-
 });
